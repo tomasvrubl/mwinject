@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <script type="text/javascript" src="mwinject.js"></script>
+        <script>
+
+            document.addEventListener("DOMContentLoaded", function(event) { 
+                __mwinject.cleanup();
+                __mwinject.getNextText();
+            });
+        </script>
+    </head>
+ <body>
+     <h1>Headline h1</h1>
+     <p>This is testing text.</p>
+     <h2>Headline h2</h2>
+     <div>
+         Second test text
+     </div>
+     <div style="margin-top: 80px">
+        <b>usage in browser console:</b><br/>
+        __mwinject.getNextText()
+        
+    </div>
+</body>
+</html>
