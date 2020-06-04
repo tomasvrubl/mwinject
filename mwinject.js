@@ -27,31 +27,41 @@ var __mwinject = {
             }
 
             var i, drop = [], noel, el, e;
-            noel = document.getElementsByClassName('as-oil-content-overlay');            
+           
+            noel = document.getElementsByTagName("H2");
+
+            var ttl = ""
+            for(i=0; i < noel.length; ++i){
+                ttl = noel[i].innerText.trim();
+                
+                if(ttl.startsWith("Článek obsahuje štítky")){
+                    drop.push(noel[i].parentElement.parentElement);
+                }
+                else if(ttl.startsWith("Anketa")){
+                    drop.push(noel[i].parentElement.parentElement);
+                }
+                else if(ttl.startsWith("Psali jsme:")){
+                    drop.push(noel[i].parentElement);
+                }
+                else if(ttl.startsWith("Jinde na netu:")){
+                    drop.push(noel[i].parentElement);
+                }
+            }
+
+            noel = document.getElementsByTagName("legend");
+
+            for(i=0; i < noel.length; ++i){
+                ttl = noel[i].innerText.trim();
+                if(ttl.startsWith("Nový příspěvek") && noel[i].parentElement.tagName == "FORM"){
+                    drop.push(noel[i].parentElement.parentElement);
+                }
+            }
+
+
+            noel = document.getElementsByClassName("profile-thumb-card");
             for (i = 0; i <  noel.length; i++) {
                 drop.push(noel[i]);            
             }
-
-            noel = document.getElementsByClassName('related-articles-wrap');
-            for (i = 0; i <  noel.length; i++) {
-                drop.push(noel[i]);            
-            }
-
-            noel = document.getElementsByClassName('social-media-buttons');
-            for (i = 0; i <  noel.length; i++) {
-                drop.push(noel[i]);            
-            }
-
-            noel = document.getElementsByClassName('profile-thumb-card');
-            for (i = 0; i <  noel.length; i++) {
-                drop.push(noel[i]);            
-            }
-
-            noel = document.getElementsByClassName('article-tags');
-            for (i = 0; i <  noel.length; i++) {
-                drop.push(noel[i]);            
-            }
-
         
             drop.push(document.getElementById("AdTrackGenericFixedMobileWrap"));
 
@@ -71,13 +81,12 @@ var __mwinject = {
             try{
 
                 if(document.location.href.match("/.+\\.parlamentnilisty\\.cz.+/") !== null){
-                    this.cleanupParlamentky();
-                    return;
+                    console.log("cistim parlamentky");
+                    this.cleanupParlamentky();                    
                 }
-                
-                if(document.location.href.match("/.+\\.justice\\.cz.+/") !== null){
+                else if(document.location.href.match("/.+\\.justice\\.cz.+/") !== null){
+                    console.log("cistim justici");
                     this.cleanupJustice();
-                    return;
                 }
 
             }catch(ex){}
@@ -88,6 +97,12 @@ var __mwinject = {
             for (i = 0; i <  noel.length; i++) {
                 drop.push(noel[i]);            
             }
+
+            noel = document.getElementsByTagName('script');         
+            for (i = 0; i <  noel.length; i++) {
+                drop.push(noel[i]);            
+            }
+
 
             noel = document.getElementsByTagName('noscript');         
             for (i = 0; i <  noel.length; i++) {
@@ -744,7 +759,7 @@ var __mwinject = {
         this.getFastNavNext();
         this.scrollTo();
        
-        return this.__getFastNavElementLabel(this._el) + this._el.innerText.replace(/\s\s+/g,' ');
+        return this._el.innerText.replace(/\s\s+/g,' ');
     },
 
     getFastNavNext : function() {
@@ -790,7 +805,7 @@ var __mwinject = {
         this.getFastNavPrev();
         this.scrollTo();
 
-        return this.__getFastNavElementLabel(this._el) + this._el.innerText.replace(/\s\s+/g,' ');
+        return this._el.innerText.replace(/\s\s+/g,' ');
     },
 
     getFastNavPrev : function() {
@@ -909,50 +924,8 @@ var __mwinject = {
     },
     
     __isFastNavElement : function(el){
-        return el && (/H[1-2]/.test(el.tagName) || /MENU/.test(el.tagName) || this.__isMenuAttribute(el)) && !/^\s*$/.test(el.textContent);
+        return el && (/H[1-2]/.test(el.tagName)); 
     },
 
-    __getFastNavElementLabel : function(el){
-
-        try{
-            if(/H1/.test(el.tagName)){
-                return "Nadpis : ";
-            }
-            else if(/H2/.test(el.tagName)){
-                return "Podnadpis : ";
-            }
-            else if(/MENU/.test(el.tagName) || this.__isMenuAttribute(el)){
-                return ""; 
-            }
-
-        }catch(ex){}
-    
-        return "";
-    }, 
-
-    __isMenuAttribute : function(el){
-
-        if(el == null){
-            return false;
-        }
-
-        try{
-            var at = el.attributes;
-            var lw;
-            for(var i=0; i < at.length; i++ ){      
-                
-                lw = at[i].name.toLowerCase();
-                if(/onclick/.test(lw)){
-                    continue;
-                }
-                
-                if(/.*menu.*/.test(lw) || /.*menu.*/.test(at[i].nodeValue.toLowerCase())){
-                    return true;
-                }
-            }
-        }catch(ex){}
-
-        return false;
-    }
 
 };

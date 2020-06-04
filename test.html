@@ -5,11 +5,15 @@
         <meta charset="UTF-8">
         <script type="text/javascript" src="mwinject.js"></script>
         <script>
-
-            document.addEventListener("DOMContentLoaded", function(event) { 
+            window.onhashchange = function() { console.log("tt"); };
+            document.addEventListener( "DOMContentLoaded", function(){
                 __mwinject.cleanup();
-                __mwinject.getNextText();
+                __mwinject._getTopFirst();
+                __mwinject.getFastNavNextText();
             });
+
+            
+            
         </script>
     </head>
  <body>
