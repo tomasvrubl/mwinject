@@ -10,12 +10,12 @@ var __mwinject = {
     _lbl_button : 'Button',
 
     cleanupJustice: function(){
-        
+
         try{ document.getElementById('AdvancedSearch').remove(); }catch(ex){}
         try{ document.getElementById('page-h').remove(); }catch(ex){}
         try{ document.getElementById('frag-rejstrik-switchComp-wholebead').childNodes[0].remove(); }catch(ex){}
         try{ document.getElementById('page-f').remove(); }catch(ex){}
-        
+
     },
 
     cleanupParlamentky: function(){
@@ -27,13 +27,13 @@ var __mwinject = {
             }
 
             var i, drop = [], noel, el, e;
-           
+
             noel = document.getElementsByTagName("H2");
 
             var ttl = ""
             for(i=0; i < noel.length; ++i){
                 ttl = noel[i].innerText.trim();
-                
+
                 if(ttl.startsWith("Článek obsahuje štítky")){
                     drop.push(noel[i].parentElement.parentElement);
                 }
@@ -60,9 +60,9 @@ var __mwinject = {
 
             noel = document.getElementsByClassName("profile-thumb-card");
             for (i = 0; i <  noel.length; i++) {
-                drop.push(noel[i]);            
+                drop.push(noel[i]);
             }
-        
+
             drop.push(document.getElementById("AdTrackGenericFixedMobileWrap"));
 
             for(i=drop.length-1; i > -1 ; --i){
@@ -82,7 +82,7 @@ var __mwinject = {
 
                 if(document.location.href.match("/.+\\.parlamentnilisty\\.cz.+/") !== null){
                     console.log("cistim parlamentky");
-                    this.cleanupParlamentky();                    
+                    this.cleanupParlamentky();
                 }
                 else if(document.location.href.match("/.+\\.justice\\.cz.+/") !== null){
                     console.log("cistim justici");
@@ -92,25 +92,27 @@ var __mwinject = {
             }catch(ex){}
 
             var i, drop = [], noel, el, e;
-                  
-            noel = document.getElementsByTagName('iframe');         
+
+            noel = document.getElementsByTagName('IFRAME');
             for (i = 0; i <  noel.length; i++) {
-                drop.push(noel[i]);            
+                drop.push(noel[i]);
             }
 
-            noel = document.getElementsByTagName('script');         
+            /*
+            google provadi redirect nemazat scripty
+            noel = document.getElementsByTagName('SCRIPT');
             for (i = 0; i <  noel.length; i++) {
-                drop.push(noel[i]);            
+                drop.push(noel[i]);
             }
 
 
-            noel = document.getElementsByTagName('noscript');         
+            noel = document.getElementsByTagName('NOSCRIPT');
             for (i = 0; i <  noel.length; i++) {
-                drop.push(noel[i]);            
-            }
+                drop.push(noel[i]);
+            }*/
 
             el = document.body.getElementsByTagName("*");
-         
+
             for(i=0; i < el.length; ++i){
                 try{
                     e = el[i];
@@ -122,7 +124,7 @@ var __mwinject = {
                         drop.push(e);
                         continue;
                     }
-                    
+
                     e.style.backgroundImage = 'none !important';
                     e.style.background = 'none !important';
                     e.style.backgroundUrl = 'none !important';
@@ -136,7 +138,7 @@ var __mwinject = {
                     drop[i].remove();
                 }catch(ex) {}
             }
-         
+
     }catch(ex) {}
 
 
@@ -147,22 +149,22 @@ var __mwinject = {
     },
 
     _invokeClick : function(){
-    
-       if(this._el){                
+
+       if(this._el){
 
             if(this._el.nodeType == 1 ){
 
                 if(this.isVideo()){
-                    
+
                     if(this._el.nodeName == 'VIDEOPLAYER'){
                         try{
                             var e = this._el;
-    
-                            e.dispatchEvent(new MouseEvent("mouseover")); 
-                            e.dispatchEvent(new MouseEvent("mousedown")); 
+
+                            e.dispatchEvent(new MouseEvent("mouseover"));
+                            e.dispatchEvent(new MouseEvent("mousedown"));
                             e.dispatchEvent(new MouseEvent("click"));
-                            e.dispatchEvent(new MouseEvent("mouseup")); 
-    
+                            e.dispatchEvent(new MouseEvent("mouseup"));
+
                          }catch(ex){}
 
                     }
@@ -174,7 +176,7 @@ var __mwinject = {
                             isplaying = !!(this._el.currentTime > 0 && !this._el.paused && !this._el.ended && this._el.readyState > 2);
                         }
                         catch(ex){}
-                        
+
                         if(isplaying){
                             this._el.pause();
                         }else{
@@ -187,10 +189,10 @@ var __mwinject = {
                     try{
                         var e = this._el;
 
-                        e.dispatchEvent(new MouseEvent("mouseover")); 
-                        e.dispatchEvent(new MouseEvent("mousedown")); 
+                        e.dispatchEvent(new MouseEvent("mouseover"));
+                        e.dispatchEvent(new MouseEvent("mousedown"));
                         e.dispatchEvent(new MouseEvent("click"));
-                        e.dispatchEvent(new MouseEvent("mouseup")); 
+                        e.dispatchEvent(new MouseEvent("mouseup"));
 
                      }catch(ex){}
 
@@ -198,14 +200,14 @@ var __mwinject = {
 
             }
             else{
-                
+
                 try{
                     var e = this._el.parentElement;
 
-                    e.dispatchEvent(new MouseEvent("mouseover")); 
-                    e.dispatchEvent(new MouseEvent("mousedown")); 
+                    e.dispatchEvent(new MouseEvent("mouseover"));
+                    e.dispatchEvent(new MouseEvent("mousedown"));
                     e.dispatchEvent(new MouseEvent("click"));
-                    e.dispatchEvent(new MouseEvent("mouseup")); 
+                    e.dispatchEvent(new MouseEvent("mouseup"));
 
                 }catch(ex){}
 
@@ -227,7 +229,7 @@ var __mwinject = {
     },
 
     getPrevText : function(){
-       
+
         var bf = this.getBufferedText(-1);
 
         if(bf != null){
@@ -409,6 +411,8 @@ var __mwinject = {
             return "";
         }
 
+        return this._el.href;
+        /*
         var sb = document.location.href.substr(0, document.location.href.lastIndexOf("/"));
 
         var href = this._el.getAttribute("href");
@@ -420,7 +424,7 @@ var __mwinject = {
             return sb + href;
         }
 
-        return sb + "/" + href;
+        return sb + "/" + href;*/
     },
 
     isLink: function(){
@@ -495,7 +499,7 @@ var __mwinject = {
             if(href.startsWith("/")){
                 return sb + href;
             }
-    
+
             return sb + "/" + href;
         }
         else if(e.parentElement.hasAttribute("href")){
@@ -635,11 +639,10 @@ var __mwinject = {
 
 
         if(el.nodeType == 1 && (this._isVideo(el) || this._isImage(el) || this._isButton(el) || this._isLink(el))){
-
             return el;
         }
 
-        if(el.childNodes.length > 0 && (!this._isLink(el) && !this._isVideo(el))){
+        if(el.childNodes.length > 0 && !this._isScript(el) && !this._isLink(el) && !this._isVideo(el)){
             return this._getNextChild(el.childNodes[0]);
         }
 
@@ -666,7 +669,7 @@ var __mwinject = {
             return el;
         }
 
-        if(el.childNodes.length > 0 && (!this._isLink(el) && !this._isVideo(el))){
+        if(el.childNodes.length > 0 && !this._isScript(el) && (!this._isLink(el) && !this._isVideo(el))){
             return this._getPrevChild(el.lastChild);
         }
 
@@ -719,11 +722,15 @@ var __mwinject = {
 
         if(el == null)
             return false;
+        
+        if(/NOSCRIPT/.test(el.nodeName) || /SCRIPT/.test(el.nodeName) || /STYLE/.test(el.nodeName))
+            return false;
 
         if(el.nodeType === 1){
-            return  !(el.textContent == null || !/^\s*$/.test(el.textContent) || /SCRIPT/.test(el.nodeName) || /STYLE/.test(el.nodeName)) || this._isImage(el) || this._isVideo(el) || this._isButton(el);
+
+            return  !(!el.textContent || /^\s*$/.test(el.textContent))  || this._isImage(el) || this._isVideo(el) || this._isButton(el);
         }
-        else if(el.nodeType === 3){        
+        else if(el.nodeType === 3){
               return !(!el.nodeValue || /^\s*$/.test(el.nodeValue));
         }
 
@@ -731,6 +738,9 @@ var __mwinject = {
 
     },
 
+    _isScript: function(el){
+        return /NOSCRIPT/.test(el.nodeName) || /SCRIPT/.test(el.nodeName) || /STYLE/.test(el.nodeName);
+    },
 
     getFastNavNextChildText : function(){
 
@@ -758,7 +768,7 @@ var __mwinject = {
 
         this.getFastNavNext();
         this.scrollTo();
-       
+
         return this._el.innerText.replace(/\s\s+/g,' ');
     },
 
@@ -794,7 +804,7 @@ var __mwinject = {
             e = document.body.firstChild;
         }
 
-        this._el = e;        
+        this._el = e;
         this.highlightStyle();
         return this._el;
 
@@ -839,7 +849,7 @@ var __mwinject = {
         if(e == this._el){
             e = document.body.lastChild;
         }
-        this._el = e;        
+        this._el = e;
         this.highlightStyle();
         return this._el;
 
@@ -888,7 +898,7 @@ var __mwinject = {
     },
 
     __getFastNavNextParent : function(el){
-        
+
         if(document.body == el){
             return null;
         }
@@ -906,7 +916,7 @@ var __mwinject = {
     },
 
     __getFastNavPrevParent : function(el){
-        
+
         if(document.body == el){
             return null;
         }
@@ -922,9 +932,9 @@ var __mwinject = {
 
         return this.__getFastNavPrevParent(p);
     },
-    
+
     __isFastNavElement : function(el){
-        return el && (/H[1-2]/.test(el.tagName)); 
+        return el && (/H[1-2]/.test(el.tagName));
     },
 
 
