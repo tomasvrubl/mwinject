@@ -10,4 +10,10 @@ Select next text on the page<br/>
 Select previous text on the page<br/>
 <code>__mwinject.getPrevText();</code>
 
+Open link<br/>
+<code>__mwinject.openLink()</code>
+
+Fast navigation<br/>
+<code>__mwinject.getFastNavNextText() or __mwinject.getFastNavPrevText()</code>
+
 
