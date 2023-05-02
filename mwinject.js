@@ -8,6 +8,7 @@ var __mwinject = {
     _lbl_video : 'Video',
     _lbl_link : 'Odkaz',
     _lbl_button : 'Button',
+    _lbl_iframe: 'Ifrejm',
 
     cleanupJustice: function(){
 
@@ -63,6 +64,12 @@ var __mwinject = {
                 drop.push(noel[i]);
             }
 
+            noel = document.getElementsByTagName("noscript");
+            for (i = 0; i <  noel.length; i++) {
+                drop.push(noel[i]);
+            }
+
+
             drop.push(document.getElementById("AdTrackGenericFixedMobileWrap"));
 
             for(i=drop.length-1; i > -1 ; --i){
@@ -72,6 +79,15 @@ var __mwinject = {
             }
 
         }catch(ex){}
+    },
+
+    isVisible(el){
+        var v = !!( el.offsetWidth || el.offsetHeight || el.getClientRects().length );
+
+        var s = window.getComputedStyle(el);
+        v2 = s.opacity !== "0" && s.display!=='none' && s.visibility!== 'hidden';
+
+        return v && v2;
     },
 
     cleanup: function(){
@@ -93,23 +109,12 @@ var __mwinject = {
 
             var i, drop = [], noel, el, e;
 
+            /*
             noel = document.getElementsByTagName('IFRAME');
             for (i = 0; i <  noel.length; i++) {
                 drop.push(noel[i]);
-            }
-
-            /*
-            google provadi redirect nemazat scripty
-            noel = document.getElementsByTagName('SCRIPT');
-            for (i = 0; i <  noel.length; i++) {
-                drop.push(noel[i]);
-            }
-
-
-            noel = document.getElementsByTagName('NOSCRIPT');
-            for (i = 0; i <  noel.length; i++) {
-                drop.push(noel[i]);
             }*/
+
 
             el = document.body.getElementsByTagName("*");
 
@@ -160,10 +165,16 @@ var __mwinject = {
                         try{
                             var e = this._el;
 
+                            var evObj = document.createEvent('Events');
+                            evObj.initEvent('click', true, false);
+                            e.dispatchEvent(evObj);
+                            /*
+
                             e.dispatchEvent(new MouseEvent("mouseover"));
                             e.dispatchEvent(new MouseEvent("mousedown"));
                             e.dispatchEvent(new MouseEvent("click"));
                             e.dispatchEvent(new MouseEvent("mouseup"));
+                            */
 
                          }catch(ex){}
 
@@ -189,10 +200,18 @@ var __mwinject = {
                     try{
                         var e = this._el;
 
+                        var evObj = document.createEvent('Events');
+                        evObj.initEvent('click', true, false);
+                        e.dispatchEvent(evObj);
+
+                        e.click();
+                        /*
+
                         e.dispatchEvent(new MouseEvent("mouseover"));
                         e.dispatchEvent(new MouseEvent("mousedown"));
                         e.dispatchEvent(new MouseEvent("click"));
                         e.dispatchEvent(new MouseEvent("mouseup"));
+                        */
 
                      }catch(ex){}
 
@@ -204,10 +223,17 @@ var __mwinject = {
                 try{
                     var e = this._el.parentElement;
 
+                    var evObj = document.createEvent('Events');
+                    evObj.initEvent('click', true, false);
+                    e.dispatchEvent(evObj);
+                    e.click();
+                    /*
+
                     e.dispatchEvent(new MouseEvent("mouseover"));
                     e.dispatchEvent(new MouseEvent("mousedown"));
                     e.dispatchEvent(new MouseEvent("click"));
                     e.dispatchEvent(new MouseEvent("mouseup"));
+                    */
 
                 }catch(ex){}
 
@@ -351,7 +377,7 @@ var __mwinject = {
             return null;
         }
 
-        var v = this._el_txt_buff[this._el_txt_buff_pos].trim();
+        var v = this._el_txt_buff[this._el_txt_buff_pos].toLowerCase().trim();
         return v.length > 0 ? v + '.' : null;
     },
 
@@ -412,19 +438,6 @@ var __mwinject = {
         }
 
         return this._el.href;
-        /*
-        var sb = document.location.href.substr(0, document.location.href.lastIndexOf("/"));
-
-        var href = this._el.getAttribute("href");
-        if(/^https?:\/\//.test(href)){
-            return href;
-        }
-
-        if(href.startsWith("/")){
-            return sb + href;
-        }
-
-        return sb + "/" + href;*/
     },
 
     isLink: function(){
@@ -443,6 +456,18 @@ var __mwinject = {
        return this._isImage(this._el);
     },
 
+    _isIframe: function(e){
+
+
+        if(e == null)
+            return false;
+
+        return e.nodeType == 1 && e.nodeName == 'IFRAME';
+      },
+
+      isIframe: function(){
+         return this._isIframe(this._el);
+      },
 
 
     _isButton: function(e){
@@ -473,11 +498,49 @@ var __mwinject = {
     },
 
     playVideo: function(){
-        this._el.play();
+        try{
+            this._el.play();
+        }catch(ex){
+            try{
+                var e = this._el;
+
+                var evObj = document.createEvent('Events');
+                evObj.initEvent('click', true, false);
+                e.dispatchEvent(evObj);
+                /*
+
+                e.dispatchEvent(new MouseEvent("mouseover"));
+                e.dispatchEvent(new MouseEvent("mousedown"));
+                e.dispatchEvent(new MouseEvent("click"));
+                e.dispatchEvent(new MouseEvent("mouseup"));
+                */
+
+             }catch(ex){}
+        }
+
     },
 
     pauseVideo: function(){
-        this._el.pause();
+        try{
+            this._el.pause();
+        }catch(ex){
+            try{
+                var e = this._el;
+
+                var evObj = document.createEvent('Events');
+                evObj.initEvent('click', true, false);
+                e.dispatchEvent(evObj);
+                /*
+
+                e.dispatchEvent(new MouseEvent("mouseover"));
+                e.dispatchEvent(new MouseEvent("mousedown"));
+                e.dispatchEvent(new MouseEvent("click"));
+                e.dispatchEvent(new MouseEvent("mouseup"));
+                */
+
+             }catch(ex){}
+        }
+
     },
 
     getLinkURL: function(){
@@ -550,7 +613,7 @@ var __mwinject = {
         }
 
       var v = e.nodeType == 1 ?  e.innerText : e.nodeValue;
-      return v == null ? "" : v.replace(/\s\s+/g,' ') ;
+      return v == null ? "" : v.replace(/\s\s+/g,' ').toLowerCase() ;
     },
 
     getNext : function(){
@@ -637,8 +700,19 @@ var __mwinject = {
             return null;
         }
 
+        if(el.nodeType == 1 && !this.isVisible(el)){
 
-        if(el.nodeType == 1 && (this._isVideo(el) || this._isImage(el) || this._isButton(el) || this._isLink(el))){
+            var pp = el.parentNode;
+            if(el === pp.lastChild){
+                return this._getNextChild(this._getParentNext(pp));
+            }
+
+            return this._getNextChild(el.nextSibling);
+
+        }
+
+
+        if(el.nodeType == 1 && (this._isVideo(el) || this._isImage(el) || this._isButton(el) || this._isLink(el) || this._isIframe(el))){
             return el;
         }
 
@@ -665,7 +739,18 @@ var __mwinject = {
             return null;
         }
 
-        if(el.nodeType == 1 && (this._isVideo(el) || this._isImage(el) || this._isButton(el) || this._isLink(el))){
+        if(el.nodeType == 1 && !this.isVisible(el)){
+
+            var pp = el.parentNode;
+            if(el === pp.childNodes[0]){
+                return this._getPrevChild(this._getParentPrev(pp));
+            }
+
+            return this._getPrevChild(el.previousSibling);
+
+        }
+
+        if(el.nodeType == 1 && (this._isVideo(el) || this._isImage(el) || this._isButton(el) || this._isLink(el) || this._isIframe(el))){
             return el;
         }
 
@@ -722,11 +807,11 @@ var __mwinject = {
 
         if(el == null)
             return false;
-        
+
         if(/NOSCRIPT/.test(el.nodeName) || /SCRIPT/.test(el.nodeName) || /STYLE/.test(el.nodeName))
             return false;
 
-        if(el.nodeType === 1){
+        if(el.nodeType === 1 && this.isVisible(el)){
 
             return  !(!el.textContent || /^\s*$/.test(el.textContent))  || this._isImage(el) || this._isVideo(el) || this._isButton(el);
         }
