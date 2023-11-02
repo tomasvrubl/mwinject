@@ -18,7 +18,6 @@ var __mwinject = {
         try{ document.getElementById('page-f').remove(); }catch(ex){}
 
     },
-
     cleanupParlamentky: function(){
 
         try{
@@ -97,11 +96,9 @@ var __mwinject = {
             try{
 
                 if(document.location.href.match("/.+\\.parlamentnilisty\\.cz.+/") !== null){
-                    console.log("cistim parlamentky");
                     this.cleanupParlamentky();
                 }
                 else if(document.location.href.match("/.+\\.justice\\.cz.+/") !== null){
-                    console.log("cistim justici");
                     this.cleanupJustice();
                 }
 
@@ -109,11 +106,12 @@ var __mwinject = {
 
             var i, drop = [], noel, el, e;
 
-            /*
-            noel = document.getElementsByTagName('IFRAME');
-            for (i = 0; i <  noel.length; i++) {
-                drop.push(noel[i]);
-            }*/
+
+            try{
+             while(!this.removeEmptyElements());
+
+            }catch(ex){}
+
 
 
             el = document.body.getElementsByTagName("*");
@@ -148,6 +146,26 @@ var __mwinject = {
 
 
     },
+
+   removeEmptyElements: function() {
+
+        var done = true;
+        var elements = document.getElementsByTagName("*");
+
+         // Iterate over each element
+         for (var i = 0; i < elements.length; i++) {
+           var element = elements[i];
+
+           if (element.innerHTML.trim() === "") {
+             done = false;
+             element.parentNode.removeChild(element);
+
+           }
+         }
+
+         return done;
+
+   },
 
     getElement : function() {
         return this._el;
@@ -393,12 +411,21 @@ var __mwinject = {
 
     },
 
+    setCurrentPosition : function(el){
+        this._el = this._getNextChild(el);
+        try{
+                this.restoreStyle();
+                this.highlightStyle();
+                this.setBufferText(this.getText(), -1);
+        }catch(ex){}
+    },
 
     highlightStyle : function(){
         if(this._el == null)
             return;
 
         var e =  this._el.nodeType == 1 ? this._el : this._el.parentElement;
+
 
         this._style.borderWidth = e.style.borderWidth;
         this._style.borderColor = e.style.borderColor;
@@ -437,7 +464,11 @@ var __mwinject = {
             return "";
         }
 
-        return this._el.href;
+        if(this._el.parentElement.hasAttribute("href")){
+          return this._el.parentElement.getAttribute("href");
+        }
+
+        return this._el.getAttribute("href");
     },
 
     isLink: function(){
